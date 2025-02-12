@@ -1,5 +1,5 @@
 </main>
-<footer class="p-3 bg-dark text-white mt-auto">
+<footer class="p-3 bg-primary bg-navy text-white mt-auto">
     <div class="container">
         <p class="mb-1 text-center">`Copyright © <?= date('Y') ?> Mulyana N. All Rights Reserved`</p>
         <p class="mb-0 text-center">
@@ -11,6 +11,11 @@
         </p>
     </div>
 </footer>
+<style>
+        .bg-navy {
+            background-color: #001f3f !important;
+        }
+    </style>
 </body>
 
 </html>
