@@ -65,13 +65,13 @@ class ArticleController extends BaseController
         $id = $matches[2];           // The number after "--"
         $shortdesc = $matches[3];    // Everything after "-id-"
 
+        $data['article'] = $this->articleModel->getArticleById($id);
         $type = $this->request->getMethod();
         if ($type == "GET") {
-            $data['article'] = $this->articleModel->getArticleById($id);
             return view("article/v_article_form", $data);
         }
 
-        $data = [
+        $formData = [
             'id' => $this->request->getPost("id"),
             'title' => $this->request->getPost("title"),
             'content' => $this->request->getPost("content")
@@ -82,11 +82,12 @@ class ArticleController extends BaseController
             'content' => 'required|max_length[255]'
         ];
 
-        if (!$this->validateData($data, $rule)) {
-            return view("article/v_article_form", ['errors' => $this->validator->getErrors()]);
+        if (!$this->validateData($formData, $rule)) {
+            $data['errors'] = $this->validator->getErrors();
+            return view("article/v_article_form", $data);
         }
 
-        $article = new Article($data['id'], $data['title'], $data['content']);
+        $article = new Article($formData['id'], $formData['title'], $formData['content']);
         $this->articleModel->updateArticle($article);
         return redirect()->to("article");
     }
