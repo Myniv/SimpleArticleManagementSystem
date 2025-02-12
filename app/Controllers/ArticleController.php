@@ -15,7 +15,7 @@ class ArticleController extends BaseController
     }
     public function index()
     {
-        $data = $this->articleModel->getAllArticle();
+        $data["articles"] = $this->articleModel->getAllArticle();
         return view('article/v_article_list', $data);
     }
 
@@ -23,7 +23,7 @@ class ArticleController extends BaseController
     {
         $type = $this->request->getMethod();
         if ($type == "GET") {
-            return view("article/v_create");
+            return view("article/v_article_form");
         }
 
         $data = [
@@ -38,7 +38,7 @@ class ArticleController extends BaseController
         ];
 
         if (!$this->validateData($data, $rule)) {
-            return view("article/v_article_create", ['errors' => $this->validator->getErrors()]);
+            return view("article/v_article_form", ['errors' => $this->validator->getErrors()]);
         }
 
         $article = new Article($data['id'], $data['title'], $data['content']);
@@ -51,7 +51,7 @@ class ArticleController extends BaseController
         $type = $this->request->getMethod();
         if ($type == "GET") {
             $data['article'] = $this->articleModel->getArticleById($id);
-            return view("article/v_create", $data);
+            return view("article/v_article_form", $data);
         }
 
         $data = [
@@ -66,7 +66,7 @@ class ArticleController extends BaseController
         ];
 
         if (!$this->validateData($data, $rule)) {
-            return view("article/v_article_create", ['errors' => $this->validator->getErrors()]);
+            return view("article/v_article_form", ['errors' => $this->validator->getErrors()]);
         }
 
         $article = new Article($data['id'], $data['title'], $data['content']);
