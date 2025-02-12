@@ -18,6 +18,17 @@ class ArticleController extends BaseController
         $data["articles"] = $this->articleModel->getAllArticle();
         return view('article/v_article_list', $data);
     }
+    public function detail($slug)
+    {
+        preg_match('/(.+)--(\d+)-(.+)/', $slug, $matches);
+
+        $title = str_replace('-', ' ', $matches[1]); // Everything before "--" && convert "-" to " " (space)
+        $id = $matches[2];           // The number after "--"
+        $shortdesc = $matches[3];    // Everything after "-id-"
+
+        $data["article"] = $this->articleModel->getArticleById($id);
+        return view('article/v_article_detail', $data);
+    }
 
     public function create()
     {
@@ -33,7 +44,7 @@ class ArticleController extends BaseController
         ];
         $rule = [
             'id' => 'required|integer',
-            "title" => 'required|max_length[255]',
+            "title" => 'required|max_length[50]',
             'content' => 'required|max_length[255]'
         ];
 
@@ -46,8 +57,14 @@ class ArticleController extends BaseController
         return redirect()->to("/article");
     }
 
-    public function update($id)
+    public function update($slug)
     {
+        preg_match('/(.+)--(\d+)-(.+)/', $slug, $matches);
+
+        $title = str_replace('-', ' ', $matches[1]); // Everything before "--" && convert "-" to " " (space)
+        $id = $matches[2];           // The number after "--"
+        $shortdesc = $matches[3];    // Everything after "-id-"
+
         $type = $this->request->getMethod();
         if ($type == "GET") {
             $data['article'] = $this->articleModel->getArticleById($id);
@@ -61,7 +78,7 @@ class ArticleController extends BaseController
         ];
         $rule = [
             'id' => 'required|integer',
-            "title" => 'required|max_length[255]',
+            "title" => 'required|max_length[50]',
             'content' => 'required|max_length[255]'
         ];
 
