@@ -17,6 +17,6 @@ $routes->group('article', function ($routes) {
     $routes->delete('delete/(:num)', [ArticleController::class, 'delete/$1']);
 });
 
-// $routes->set404Override(static function () {
-//     return view("errors/custom_error_404");
-// });
+$routes->set404Override(static function () {
+    return view("errors/custom_error_404");
+});
